@@ -159,6 +159,7 @@ except:
 # Файловые библиотеки
 import config
 from config import settings
+import tokens
 
 # Переменные Джарвиса
 # Путь до бота
@@ -170,7 +171,7 @@ CMD_LIST = yaml.safe_load(
 
 # PORCUPINE
 porcupine = pvporcupine.create(
-    access_key=config.PICOVOICE_TOKEN,
+    access_key=tokens.PICOVOICE_TOKEN,
     keywords=['jarvis'],
     sensitivities=[1]
 )
@@ -554,7 +555,7 @@ def run_bot():
 
 
 def run_ds_bot():
-    bot.run(config.DISCORD_TOKEN)
+    bot.run(tokens.DISCORD_TOKEN)
 
 
 # Одновременный запуск двух процессов

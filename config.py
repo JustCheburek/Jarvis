@@ -22,10 +22,6 @@ COMMANDS = {
     f"{COMMANDS_PATH}/open_url": funcs.open_url
 }
 
-# Токены (очень желательно получить свой)
-DISCORD_TOKEN = "MTA5MDIwMDc3Mjg1NzMxOTQ0NA.G47RA1.arcX69YQ6IZ9WIlXF60DrAucMyf61E6gVgjVFI"
-PICOVOICE_TOKEN = "G2RFl+lH8WwCt6cZqT+39omerZ2n4/4GNkrD6N+8zaJv2Jn5zCjhEA=="
-
 # НЕ ИЗМЕНЯТЬ
 # Бот-ассистент
 ALIASES = ('джарвис', 'Jarvis')  # обращение: 1-ое как называют, 2-ое как пишется в консоли
