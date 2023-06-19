@@ -1,0 +1,16 @@
+{
+  "user": {
+    "name": "чебурек",
+    "ds_id": 723738094561394690
+  },
+  "sound": {
+    "ds": false,
+    "speed": 1.3,
+    "wait_with_no_wake_word": 8
+  },
+  "micro": {
+    "index": -1
+  },
+  "ds_guild": 1012334719230292048,
+  "gpt_id": "chatcmpl-7SNr7Kuac20msmHsZe31oqnguMWtC"
+}
