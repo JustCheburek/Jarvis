@@ -240,7 +240,7 @@ async def join(ctx):
 async def join_user():
     global vc
 
-    guild = bot.get_guild(settings["discord"]["ds_guild"])
+    guild = bot.get_guild(settings["ds"]["ds_guild"])
     user = bot.get_user(settings["ds"]["ds_id"])
     all_channels = bot.get_all_channels()
 
@@ -304,7 +304,7 @@ def say(text="", filename=None):
                     break
 
         if vc is None:
-            vc = discord.utils.get(bot.voice_clients, guild=bot.get_guild(settings["discord"]["ds_guild"]))
+            vc = discord.utils.get(bot.voice_clients, guild=bot.get_guild(settings["ds"]["ds_guild"]))
 
         if vc is not None:
             try:

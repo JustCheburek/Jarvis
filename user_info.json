@@ -4,7 +4,7 @@
     "ds_guild": 1012334719230292048
   },
   "sound": {
-    "ds": false,
+    "ds": true,
     "speed": 1.6,
     "wait_with_no_wake_word": 8
   },
