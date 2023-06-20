@@ -156,10 +156,16 @@ except:
     install_library('pywin32')
     import win32api
 
+try:
+    from dotenv import load_dotenv
+except:
+    install_library('python-dotenv')
+    from dotenv import load_dotenv
+
+
 # Файловые библиотеки
 import config
 from config import settings
-import tokens
 
 # Переменные Джарвиса
 # Путь до бота
@@ -168,10 +174,12 @@ CDIR = os.getcwd()
 CMD_LIST = yaml.safe_load(
     open('commands.yaml', 'rt', encoding='utf8'),
 )
+# Токены
+dotenv = load_dotenv(os.path.join(CDIR, 'tokens.env'))
 
 # PORCUPINE
 porcupine = pvporcupine.create(
-    access_key=tokens.PICOVOICE_TOKEN,
+    access_key=os.environ.get("PICOVOICE_TOKEN"),
     keywords=['jarvis'],
     sensitivities=[1]
 )
@@ -562,7 +570,7 @@ def run_bot():
 
 
 def run_ds_bot():
-    bot.run(tokens.DISCORD_TOKEN)
+    bot.run(os.environ.get("DS_TOKEN"))
 
 
 # Одновременный запуск двух процессов
