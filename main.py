@@ -162,20 +162,24 @@ except:
     install_library('python-dotenv')
     from dotenv import load_dotenv
 
+try:
+    import levenshtein
+except:
+    install_library('python-Levenshtein')
+    import levenshtein
+
 
 # Файловые библиотеки
 import config
 from config import settings
 
 # Переменные Джарвиса
-# Путь до бота
-CDIR = os.getcwd()
 # Команды
 CMD_LIST = yaml.safe_load(
     open('commands.yaml', 'rt', encoding='utf8'),
 )
 # Токены
-tokens = load_dotenv(os.path.join(CDIR, 'tokens.env'))
+tokens = load_dotenv('tokens.env')
 
 # PORCUPINE
 porcupine = pvporcupine.create(
@@ -283,24 +287,21 @@ def say(text="", filename=None):
     else:
         if text != "":
             name = "speech"
-
-            dir_speech = os.path.join(CDIR, config.SPEECH_PATH)
-
-            for file in os.listdir(dir_speech):
+            for file in os.listdir(config.SPEECH_PATH):
                 if file.endswith(".mp3"):
-                    os.remove(f"{dir_speech}/{file}")
+                    os.remove(f"{config.SPEECH_PATH}/{file}")
 
             speaker.to_mp3(
                 text=text,
                 sample_rate=48000,
-                audio_dir=dir_speech,
-                name_text=name,
+                audio_dir=config.SPEECH_PATH,
+                name_text=config.SPEECH_PATH,
                 speed=settings["sound"]["speed"]
             )
 
-            for file in os.listdir(dir_speech):
+            for file in os.listdir(config.SPEECH_PATH):
                 if file.endswith(".mp3"):
-                    filename = f"{dir_speech}/{file}"
+                    filename = f"{config.SPEECH_PATH}/{file}"
                     break
 
         if vc is None:
@@ -338,8 +339,7 @@ def gpt_answer(text):
 
 
 def play(phrase):
-    sound_dir = os.path.join(CDIR, config.SOUND_PATH)
-    sound_files = os.listdir(sound_dir)
+    sound_files = os.listdir(config.SOUND_PATH)
 
     sounds = []
 
@@ -348,7 +348,7 @@ def play(phrase):
             sounds.append(sound)
 
     if len(sounds) > 0:
-        filename = os.path.join(sound_dir, random.choice(sounds))
+        filename = os.path.join(config.SOUND_PATH, random.choice(sounds))
 
         say(filename=filename)
 
@@ -367,7 +367,7 @@ def respond(voice: str):
         recorder.stop()
         log_print('Запись приостановлена')
         play("greet")
-        bot_print("Привет")
+        bot_print("Я уже слушаю тебя")
         recorder.start()
         log_print('Запись включена')
         return True
@@ -487,7 +487,7 @@ def execute_cmd(cmd: str, text: str):
     # По очереди проверяем в каждой папке команду
     for path_dir_commands in tuple(config.COMMANDS):  # commands/тип команды
         # Получаем полный путь к файлу
-        path_command = os.path.join(CDIR, path_dir_commands, user_file)
+        path_command = os.path.join(path_dir_commands, user_file)
 
         # Открываем папку команд и смотрим содержимое
         user_command_files = os.listdir(path_dir_commands)
@@ -513,7 +513,7 @@ def execute_cmd(cmd: str, text: str):
     user_file = f"{cmd}.exe"
 
     # Получаем полный путь к файлу
-    path_command = os.path.join(CDIR, config.COMMANDS_PATH, user_file)
+    path_command = os.path.join(config.COMMANDS_PATH, user_file)
 
     if os.path.isfile(path_command):
         subprocess.Popen([path_command])
@@ -529,7 +529,7 @@ def run_bot():
     play("run")
     time.sleep(0.4)
 
-    cache = os.path.join(CDIR, config.SPEECH_PATH, "cache")
+    cache = os.path.join(config.SPEECH_PATH, "cache")
 
     if os.path.isdir(cache):
         cache_files = os.listdir(cache)

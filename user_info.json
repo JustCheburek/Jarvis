@@ -1,10 +1,10 @@
 {
   "ds": {
-    "ds_id": 723738094561394690,
+    "ds_id": 517269344485507073,
     "ds_guild": 1012334719230292048
   },
   "sound": {
-    "ds": true,
+    "ds": false,
     "speed": 1.6,
     "wait_with_no_wake_word": 8
   },
