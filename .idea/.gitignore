@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Токены
+*.env
+
+# Голосовой кеш
+*.mp3
+
+# Не нужные папки для скачивания
+.idea/
+!.gitignore
