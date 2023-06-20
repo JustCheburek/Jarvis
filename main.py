@@ -232,8 +232,8 @@ async def join(ctx):
 async def join_user():
     global vc
 
-    guild = bot.get_guild(settings["ds_guild"])
-    user = bot.get_user(settings["user"]["ds_id"])
+    guild = bot.get_guild(settings["discord"]["ds_guild"])
+    user = bot.get_user(settings["ds"]["ds_id"])
     all_channels = bot.get_all_channels()
 
     if user is None:
@@ -296,7 +296,7 @@ def say(text="", filename=None):
                     break
 
         if vc is None:
-            vc = discord.utils.get(bot.voice_clients, guild=bot.get_guild(settings["ds_guild"]))
+            vc = discord.utils.get(bot.voice_clients, guild=bot.get_guild(settings["discord"]["ds_guild"]))
 
         if vc is not None:
             try:
@@ -314,7 +314,7 @@ def say(text="", filename=None):
 def gpt_answer(text):
     try:
         response = usesless.Completion.create(
-            systemMessage=f"Ты, помощник {config.ALIASES[0]}, я {settings['user']['name']}",
+            systemMessage=f"Ты, помощник {config.ALIASES[0]}",
             prompt=text,
             temperature=0.4,
             parentMessageId=settings["gpt_id"]
@@ -521,6 +521,13 @@ def run_bot():
     play("run")
     time.sleep(0.4)
 
+    cache = os.path.join(CDIR, config.SPEECH_PATH, "cache")
+
+    if os.path.isdir(cache):
+        cache_files = os.listdir(cache)
+        for file in cache_files:
+            os.remove(os.path.join(cache, file))
+
     ltc = time.time()
 
     while True:
@@ -550,7 +557,7 @@ def run_bot():
                     break
 
         except Exception as err:
-            error_print(f"Неожиданная ошибка - {err=}")
+            error_print(f"{err=}")
             recorder.start()
 
 
