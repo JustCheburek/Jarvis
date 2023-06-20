@@ -163,10 +163,10 @@ except:
     from dotenv import load_dotenv
 
 try:
-    import levenshtein
+    import Levenshtein
 except:
     install_library('python-Levenshtein')
-    import levenshtein
+    import Levenshtein
 
 
 # Файловые библиотеки
