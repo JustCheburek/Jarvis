@@ -175,7 +175,7 @@ CMD_LIST = yaml.safe_load(
     open('commands.yaml', 'rt', encoding='utf8'),
 )
 # Токены
-dotenv = load_dotenv(os.path.join(CDIR, 'tokens.env'))
+tokens = load_dotenv(os.path.join(CDIR, 'tokens.env'))
 
 # PORCUPINE
 porcupine = pvporcupine.create(
