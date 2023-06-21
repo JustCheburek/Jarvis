@@ -1,0 +1,11 @@
+Хотите невероятную скорость в джарвисе?
+
+регистрируйтесь здесь https://console.picovoice.ai/
+
+скипайте гайд
+
+копируйте токен AccessKey
+(скрин в помощь https://cdn.discordapp.com/attachments/1013734254510870579/1120909846909292654/image.png)
+
+вставляете его в файл tokens.env
+(ещё один скрин в помощь - https://cdn.discordapp.com/attachments/1013734254510870579/1120909551953252353/image.png)
