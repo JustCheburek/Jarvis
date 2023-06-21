@@ -1,8 +1,6 @@
 # Встроенные библиотеки
-import os
 import random
 import struct
-import subprocess
 import sys
 import time
 from ctypes import POINTER, cast
@@ -26,22 +24,6 @@ def uninstall_library(library):
         pip.main(['uninstall', library])
     except:
         pass
-
-
-def error_print(message):
-    print(f"[[dark_red]Error[/dark_red]] [red]{message}[/red]")
-
-
-def warn_print(message):
-    print(f"[[orange]Warning[/orange]] [yellow]{message}[/yellow]")
-
-
-def log_print(message):
-    print(f"[[green]Log[/green]] [green]{message}[/green]")
-
-
-def bot_print(message):
-    print(f"[[green]{config.ALIASES[1]}[/green]] [green]{message}[/green]")
 
 
 # Библиотеки
@@ -115,6 +97,7 @@ except ImportError:
 
 try:
     import discord
+    bot = discord.Bot(intents=discord.Intents().all())
 except ImportError:
     uninstall_library('discord.py')
     install_library('py-cord')
@@ -168,10 +151,11 @@ except:
     install_library('python-Levenshtein')
     import Levenshtein
 
-
 # Файловые библиотеки
 import config
 from config import settings
+from funcs import *
+
 
 # Переменные Джарвиса
 # Команды
@@ -195,8 +179,7 @@ device = settings["micro"]["index"]
 kaldi_rec = vosk.KaldiRecognizer(model, samplerate)
 
 # Discord
-intents = discord.Intents().all()
-bot = discord.Bot(intents=intents)
+bot = discord.Bot(intents=discord.Intents().all())
 vc = None
 
 # Запись голоса
@@ -271,6 +254,13 @@ async def join_user():
 
 
 def say(text="", filename=None):
+    """
+    Говорение
+
+    :param text: текст для озвучки
+    :param filename: файл для озвучки
+    """
+
     global speaker, vc
 
     if not settings["sound"]["ds"]:
@@ -286,7 +276,6 @@ def say(text="", filename=None):
 
     else:
         if text != "":
-            name = "speech"
             for file in os.listdir(config.SPEECH_PATH):
                 if file.endswith(".mp3"):
                     os.remove(f"{config.SPEECH_PATH}/{file}")
@@ -295,7 +284,7 @@ def say(text="", filename=None):
                 text=text,
                 sample_rate=48000,
                 audio_dir=config.SPEECH_PATH,
-                name_text=config.SPEECH_PATH,
+                name_text=config.SPEECH,
                 speed=settings["sound"]["speed"]
             )
 
@@ -323,7 +312,7 @@ def say(text="", filename=None):
 def gpt_answer(text):
     try:
         response = usesless.Completion.create(
-            systemMessage=f"Ты, помощник {config.ALIASES[0]}",
+            systemMessage=f"Ты, помощник - джарвис",
             prompt=text,
             temperature=0.4,
             parentMessageId=settings["gpt_id"]
@@ -361,7 +350,7 @@ def respond(voice: str):
 
     cmd = cmd_get_ready(voice)
 
-    print(f"[green]Распознано[/green]: [red]{voice}[/red]")
+    log_print(f"Распознано: [red]{voice}[/red]")
 
     if voice in config.ALIASES:
         recorder.stop()
@@ -384,20 +373,18 @@ def respond(voice: str):
         execute_cmd(cmd['cmd'], voice)
 
     else:
-        for phrase in config.TBR:
-            len_words = len(phrase.split(" "))
-            first_words = voice.join(voice.split(" ")[:len_words]).strip()
+        elem = check_elems_in_text(voice, tuple(config.TBR))
 
-            if fuzz.ratio(first_words, phrase) > 75:
-                response = gpt_answer(voice)
-                if response is not None:
-                    say(text=response)
-                else:
-                    warn_print(
-                        "Бесплатные попытки у ChatGPT закончились на сегодня"
-                    )
+        if elem is not None:
+            gpt_request = voice.split(elem)[-1:][0]
 
-                break
+            response = gpt_answer(gpt_request)
+            if response is not None:
+                say(text=response)
+            else:
+                warn_print(
+                    "Бесплатные попытки у ChatGPT закончились на сегодня"
+                )
 
         else:
             warn_print(f'Кажется вы не сказали вводную фразу в начале предложения:\n {", ".join(config.TBR)}')
@@ -406,9 +393,7 @@ def respond(voice: str):
     recorder.start()
     log_print('Запись включена')
 
-    if "спасибо" in voice or \
-            "окей" in voice or \
-            "ок" in voice:
+    if cmd['cmd'] == 'thanks':
         return False
     else:
         return True
@@ -472,7 +457,7 @@ def execute_cmd(cmd: str, text: str):
         return
 
     elif cmd == "repeat":
-        say(text=text.split(" ")[3:])
+        say(text=" ".join(text.split(" ")[3:]))
         return
 
     elif cmd == 'off':
@@ -525,7 +510,7 @@ def execute_cmd(cmd: str, text: str):
 def run_bot():
     global recorder, ltc
 
-    log_print(f"{config.ALIASES[1]} начал свою работу ...")
+    log_print(f"Jarvis начал свою работу ...")
     play("run")
     time.sleep(0.4)
 

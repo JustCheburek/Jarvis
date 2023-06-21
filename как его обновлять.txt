@@ -1,0 +1,2 @@
+https://github.com/JustCheburek/Jarvis скачиваем и заменяем файлы:
+main.py, funcs.py и config.py

@@ -13,7 +13,8 @@ def update_user_info():
 # Пути
 COMMANDS_PATH = "commands"
 SOUND_PATH = "sound"
-SPEECH_PATH = "sound/speech"
+SPEECH = "speech"
+SPEECH_PATH = f"{SOUND_PATH}/{SPEECH}"
 
 # Самостоятельные команды
 COMMANDS = {

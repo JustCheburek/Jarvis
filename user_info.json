@@ -6,10 +6,10 @@
   "sound": {
     "ds": false,
     "speed": 1.6,
-    "wait_with_no_wake_word": 8
+    "wait_with_no_wake_word": 15
   },
   "micro": {
     "index": -1
   },
-  "gpt_id": "chatcmpl-7T6yHz34ok8GXBOh2xtIxLSUbxP4U"
+  "gpt_id": "chatcmpl-7ThyXZFWCEpm6Iywtx4Woy6AUtgbs"
 }
